@@ -6,8 +6,8 @@
     <!-- Lottie animación en la parte superior -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieLogin"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         app:lottie_fileName="login.json"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
@@ -32,13 +32,13 @@
 
         <!-- Aquí tus campos de login -->
         <EditText
-            android:id="@+id/emailEditText"
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Correo electrónico"/>
 
         <EditText
-            android:id="@+id/passwordEditText"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Contraseña"

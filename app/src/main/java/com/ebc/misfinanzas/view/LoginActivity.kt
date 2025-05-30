@@ -22,14 +22,14 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        val emailInput = findViewById<EditText>(R.id.email_input)
-        val passwordInput = findViewById<EditText>(R.id.password_input)
+        val emailEditText = findViewById<EditText>(R.id.editTextEmail)
+        val passwordEditText = findViewById<EditText>(R.id.editTextPassword)
         val loginButton = findViewById<Button>(R.id.login_button)
         val goRegisterButton = findViewById<Button>(R.id.go_register_button)  // <- Aquí
 
         loginButton.setOnClickListener {
-            val email = emailInput.text.toString().trim()
-            val password = passwordInput.text.toString()
+            val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
 
             if(email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Por favor, ingresa email y contraseña", Toast.LENGTH_SHORT).show()
