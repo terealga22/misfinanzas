@@ -86,4 +86,7 @@ dependencies {
     // Tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+
+    //lottie
+    implementation ("com.airbnb.android:lottie:6.4.0")
 }

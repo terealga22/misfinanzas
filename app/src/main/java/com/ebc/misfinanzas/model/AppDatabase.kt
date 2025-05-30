@@ -1,11 +1,11 @@
 package com.ebc.misfinanzas.model
 
-import android.content.Context
+import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Movimiento::class], version = 2) // Aumenta la versión si hiciste cambios
+@Database(entities = [Movimiento::class], version = 3) // Aumenta la versión si hiciste cambios
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movimientoDao(): MovimientoDao
 
@@ -13,7 +13,7 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Application): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
