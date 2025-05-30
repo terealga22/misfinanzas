@@ -10,15 +10,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ebc.misfinanzas.databinding.ActivityMovimientoBinding
 import com.ebc.misfinanzas.model.Movimiento
 import com.ebc.misfinanzas.util.NotificationHelper
+import com.ebc.misfinanzas.util.RetrofitInstance
+import com.ebc.misfinanzas.util.BanxicoResponse
 import com.ebc.misfinanzas.viewmodel.MovimientoViewModel
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MovimientoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMovimientoBinding
     private lateinit var notificationHelper: NotificationHelper
-
-    // ViewModel directamente (usa AndroidViewModel, no necesita factory personalizada)
     private val viewModel: MovimientoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,22 +29,42 @@ class MovimientoActivity : AppCompatActivity() {
         binding = ActivityMovimientoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializar helper para notificaciones
         notificationHelper = NotificationHelper(this)
-
-        // Obtener el UID del usuario actual
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
         // Cargar movimientos del usuario
         viewModel.cargarMovimientosPorUsuario(userId)
 
-        // Observar los movimientos y mostrarlos
+        // Mostrar lista de movimientos con signo + o -
         viewModel.movimientos.observe(this) { lista ->
-            val texto = lista.joinToString("\n") { it.descripcion + " - $" + it.cantidad }
+            val texto = lista.joinToString("\n") {
+                val simbolo = if (it.tipo.lowercase() == "ingreso") "+" else "-"
+                "${it.descripcion} $simbolo$${it.cantidad}"
+            }
             binding.textViewMovimientos.text = texto
         }
 
-        // Insertar un nuevo movimiento
+        // Obtener tipo de cambio desde Banxico (usando enqueue)
+        val call = RetrofitInstance.api.obtenerTipoCambio()
+        call.enqueue(object : Callback<BanxicoResponse> {
+            override fun onResponse(
+                call: Call<BanxicoResponse>,
+                response: Response<BanxicoResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val tipoCambio = response.body()?.bmx?.series?.firstOrNull()?.datos?.firstOrNull()?.dato
+                    binding.textViewTipoCambio.text = "Tipo de cambio: $tipoCambio MXN/USD"
+                } else {
+                    binding.textViewTipoCambio.text = "Error al cargar tipo de cambio"
+                }
+            }
+
+            override fun onFailure(call: Call<BanxicoResponse>, t: Throwable) {
+                binding.textViewTipoCambio.text = "Fallo: ${t.message}"
+            }
+        })
+
+        // Guardar nuevo movimiento
         binding.buttonGuardar.setOnClickListener {
             val descripcion = binding.editTextDescripcion.text.toString()
             val monto = binding.editTextMonto.text.toString().toDoubleOrNull()
@@ -57,29 +80,25 @@ class MovimientoActivity : AppCompatActivity() {
                 )
                 viewModel.insertarMovimiento(nuevoMovimiento)
 
-                // Lottie
+                // Lottie animación
                 binding.lottieGuardar.visibility = View.VISIBLE
                 binding.lottieGuardar.playAnimation()
-
-                // Ocultar después de 2 segundos
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.lottieGuardar.visibility = View.GONE
                 }, 2000)
 
-                // Envia notificación
+                // Notificación
                 notificationHelper.mostrarNotificacion(
                     titulo = "Movimiento guardado",
                     mensaje = "Se registró \"$descripcion\" por $$monto"
                 )
 
-                // ✅ Limpiar campos
+                // Limpiar campos
                 binding.editTextDescripcion.text.clear()
                 binding.editTextMonto.text.clear()
             } else {
                 Toast.makeText(this, "Faltan datos", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 }
