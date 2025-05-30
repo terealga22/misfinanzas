@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "635579454311",
+    "project_id": "mis-finanzas-c0916",
+    "storage_bucket": "mis-finanzas-c0916.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635579454311:android:2a95fcda354f02ebb9d5c2",
+        "android_client_info": {
+          "package_name": "com.ebc.misfinanzas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLbdzOCM37VS3rLKcSQtV5UNFi4h9w4tA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
