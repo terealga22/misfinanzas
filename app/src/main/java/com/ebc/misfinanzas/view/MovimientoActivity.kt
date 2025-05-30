@@ -1,6 +1,10 @@
 package com.ebc.misfinanzas.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.ebc.misfinanzas.databinding.ActivityMovimientoBinding
@@ -53,14 +57,29 @@ class MovimientoActivity : AppCompatActivity() {
                 )
                 viewModel.insertarMovimiento(nuevoMovimiento)
 
-                // Mostrar notificación
-                val mensaje = "$tipoSeleccionado: $descripcion por $$monto"
-                notificationHelper.mostrarNotificacion("Nuevo movimiento", mensaje)
+                // Lottie
+                binding.lottieGuardar.visibility = View.VISIBLE
+                binding.lottieGuardar.playAnimation()
 
-                // Limpiar campos
+                // Ocultar después de 2 segundos
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.lottieGuardar.visibility = View.GONE
+                }, 2000)
+
+                // Envia notificación
+                notificationHelper.mostrarNotificacion(
+                    titulo = "Movimiento guardado",
+                    mensaje = "Se registró \"$descripcion\" por $$monto"
+                )
+
+                // ✅ Limpiar campos
                 binding.editTextDescripcion.text.clear()
                 binding.editTextMonto.text.clear()
+            } else {
+                Toast.makeText(this, "Faltan datos", Toast.LENGTH_SHORT).show()
             }
         }
+
+
     }
 }

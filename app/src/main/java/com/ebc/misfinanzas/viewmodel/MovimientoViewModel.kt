@@ -1,13 +1,12 @@
 package com.ebc.misfinanzas.viewmodel
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.ebc.misfinanzas.model.AppDatabase
 import com.ebc.misfinanzas.model.Movimiento
 import com.ebc.misfinanzas.repository.MovimientoRepository
-import com.ebc.misfinanzas.model.AppDatabase
 import kotlinx.coroutines.launch
 
 class MovimientoViewModel(application: Application) : AndroidViewModel(application) {
@@ -18,13 +17,14 @@ class MovimientoViewModel(application: Application) : AndroidViewModel(applicati
     val movimientos: LiveData<List<Movimiento>> get() = _movimientos
 
     init {
+        // Aquí sí puedes usar 'application' porque viene en el constructor
         val dao = AppDatabase.getDatabase(application).movimientoDao()
         repository = MovimientoRepository(dao)
     }
 
     fun cargarMovimientosPorUsuario(userId: String) {
         viewModelScope.launch {
-            val lista = repository.obtenerMovimientosPorUsuario(userId)  // Asegúrate que el método exista en el repo
+            val lista = repository.obtenerMovimientosPorUsuario(userId)
             _movimientos.postValue(lista)
         }
     }
@@ -32,8 +32,10 @@ class MovimientoViewModel(application: Application) : AndroidViewModel(applicati
     fun insertarMovimiento(movimiento: Movimiento) {
         viewModelScope.launch {
             repository.insertar(movimiento)
+            // Recarga los movimientos después de insertar
             cargarMovimientosPorUsuario(movimiento.userId)
         }
     }
 }
+
 

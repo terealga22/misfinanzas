@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieGuardar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        app:lottie_fileName="guardar1.json"
+        app:lottie_loop="false"
+        app:lottie_autoPlay="false"
+        android:layout_gravity="center" />
+
 
     <EditText
         android:id="@+id/editTextDescripcion"
