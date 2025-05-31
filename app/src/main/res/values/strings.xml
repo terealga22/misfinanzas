@@ -2,8 +2,9 @@
     <string name="app_name">misfinanzas</string>
     <string-array name="tipos_movimiento">
         <item>Ingreso</item>
-        <item>Gasto</item>
+        <item>Egreso</item>
     </string-array>
+
 </resources>
 
 

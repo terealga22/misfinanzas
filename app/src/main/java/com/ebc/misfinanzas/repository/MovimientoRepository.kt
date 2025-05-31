@@ -4,21 +4,23 @@ import androidx.lifecycle.LiveData
 import com.ebc.misfinanzas.model.Movimiento
 import com.ebc.misfinanzas.model.MovimientoDao
 
-class MovimientoRepository(private val movimientoDao: MovimientoDao) {
-
-    suspend fun obtenerMovimientosPorUsuario(userId: String): List<Movimiento> {
-        return movimientoDao.getMovimientosPorUsuario(userId)  // O el nombre que tengas en el DAO
+class MovimientoRepository(private val dao: MovimientoDao) {
+    fun obtenerMovimientosPorUsuario(userId: String): LiveData<List<Movimiento>> {
+        return dao.getMovimientosByUserId(userId)
     }
 
-
     suspend fun insertar(movimiento: Movimiento) {
-        movimientoDao.insertarMovimiento(movimiento)
+        dao.insertarMovimiento(movimiento)
     }
 
     suspend fun eliminar(movimiento: Movimiento) {
-        movimientoDao.eliminarMovimiento(movimiento)
+        dao.eliminarMovimiento(movimiento)
     }
-
 }
+
+
+
+
+
 
 

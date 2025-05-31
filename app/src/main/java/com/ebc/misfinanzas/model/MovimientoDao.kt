@@ -6,16 +6,22 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
+
 @Dao
 interface MovimientoDao {
-    @Query("SELECT * FROM movimiento WHERE userId = :userId")
-    suspend fun getMovimientosPorUsuario(userId: String): List<Movimiento>
-
-
     @Insert
     suspend fun insertarMovimiento(movimiento: Movimiento)
 
     @Delete
     suspend fun eliminarMovimiento(movimiento: Movimiento)
+
+    @Query("SELECT * FROM movimiento WHERE userId = :userId")
+    fun getMovimientosByUserId(userId: String): LiveData<List<Movimiento>>
+
+    // 👇 Agrega aquí esta función para depurar
+    @Query("SELECT * FROM movimiento")
+    fun obtenerTodos(): LiveData<List<Movimiento>>
 }
+
+
 
