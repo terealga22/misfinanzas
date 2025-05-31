@@ -3,7 +3,7 @@
 La aplicación "Mis Finanzas" permite a cada usuario llevar un control personal de sus ingresos y egresos desde su dispositivo móvil.
 Luego de iniciar sesión con su cuenta de correo (mediante Firebase Authentication), el usuario puede:
 
-Registrar movimientos financieros (ingresos o egresos) especificando la descripción, cantidad, tipo y fecha.
+Registrar movimientos financieros (ingresos o egresos) especificando la descripción, cantidad y tipo.
 
 Ver una lista de todos sus movimientos guardados de manera local (vinculados a su usuario con Room).
 
